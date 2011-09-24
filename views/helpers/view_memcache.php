@@ -15,16 +15,17 @@ class ViewMemcacheHelper extends Helper
             if (array_key_exists('docachetimeout', $view->viewVars)) {
                 $timeout = $view->viewVars['docachetimeout'];
             }
- 
+ 	
+			$cache_footer = '';
             if (!array_key_exists('nocachefooter', $view->viewVars)) {
-                $view->output .= "\n<!-- galeCached " . date('r') . ' -->';
+                $cache_footer = "\n<!-- galeCached " . date('r') . ' -->';
             }
             
             if ($timeout) {
                 Cache::set(array('duration' => $timeout));
             }
             
-            Cache::write($view->here, $view->output, 'view_memcache');
+            Cache::write($view->here, $view->output . $cache_footer, 'view_memcache');
         }
  
         return true;
