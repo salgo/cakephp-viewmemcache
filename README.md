@@ -28,7 +28,7 @@ Put this in APP/Controller/AppController.php or just in the controller you want 
 var $helpers = array('ViewMemcache.ViewMemcache');  
 ```
 
-From controller (or beforeFilter(), or AppController::beforeFilter()) simply do:
+From controller or beforeFilter() or AppController::beforeFilter() simply do:
 
 ```php
  $viewMemcacheTimeout = <seconds> | <cache engine readable range, ex: '+30 days'>;	//This is optional. If not set, will use
@@ -36,8 +36,11 @@ From controller (or beforeFilter(), or AppController::beforeFilter()) simply do:
  $this->set(compact('viewMemcacheTimeout','enableViewMemcache'));
 ```
 
-### nginx sample config
+### nginx sample config using PHP-FPM
 
+```
+root /var/www/example.com/app/webroot;
+	
 location / {
 	set $memcached_key "VM_:$request_uri";;
 	memcached_connect_timeout 2000;
@@ -49,8 +52,6 @@ location / {
 }
 
 location @fallback{
-	root /var/www/demo.*.com/app/webroot;
-
 	try_files $uri $uri/ /index.php?$uri&$args;
 }
 
@@ -60,3 +61,4 @@ location ~ \.php$ {
 	include fastcgi_params;
 	fastcgi_intercept_errors on;
 }
+```
