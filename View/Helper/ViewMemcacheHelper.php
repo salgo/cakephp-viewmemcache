@@ -23,12 +23,13 @@ class ViewMemcacheHelper extends AppHelper {
 		}
 	
 		if (!empty($this->_View->viewVars['enableViewMemcache'])) {
-			debug('hi');
-			if (isset($this->_View->viewVars['viewMemcacheTimeout'])) {
-				Cache::set(array('duration' => $this->_View->viewVars['viewMemcacheTimeout'],null,'view_memcache'));	//'+30 days' or seconds
+// 			debug('enabled');
+			if (isset($this->_View->viewVars['viewMemcacheDuration'])) {
+// 				debug('duration: '.$this->_View->viewVars['viewMemcacheDuration']);
+// 				Cache::set(array('duration' => $this->_View->viewVars['viewMemcacheTimeout'],null,'view_memcache'));	//'+30 days' or seconds
 			}
 
-			Cache::write($this->request->here, $this->_View->output, 'view_memcache');
+// 			Cache::write($this->request->here, $this->_View->output, 'view_memcache');
 		}
 	
 		return true;

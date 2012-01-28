@@ -1,4 +1,4 @@
-# ViewMemcache
+# ViewMemcache for CakePHP 2.X
 
 Store your view(s) to memcache.  Allows easy distributed view invalidation and serving pages right from memcache via nginx (for example)
 
@@ -9,7 +9,7 @@ clone into APP/Plugin/ViewMemcache
 Make an entry in APP/bootstrap.php for the 'view_memcache' engine and load the plugin:
 
 ```php
- Cache::config('view_memcache', array(
+Cache::config('view_memcache', array(
  		'engine' => 'Memcache', //[required]
  		'duration'=> 1209600, //2 weeks [optional]  You can conditionally set this in your controller and or action, see below
  		'probability'=> 100, //[optional]
@@ -35,9 +35,9 @@ var $helpers = array('ViewMemcache.ViewMemcache');
 From controller or beforeFilter() or AppController::beforeFilter() simply do:
 
 ```php
- $viewMemcacheTimeout = <seconds> | <cache engine readable range, ex: '+30 days'>;	//This is optional. If not set, will use
+ $viewMemcacheDuration = <seconds> | <cache engine readable range, ex: '+30 days'>;	//This is optional. If not set, will use
  $enableViewMemcache = true;
- $this->set(compact('viewMemcacheTimeout','enableViewMemcache'));
+ $this->set(compact('viewMemcacheDuration','enableViewMemcache'));
 ```
 
 ### nginx sample config using PHP-FPM
