@@ -6,7 +6,7 @@ Store your view(s) to memcache.  Allows easy distributed view invalidation and s
 
 clone into APP/Plugin/ViewMemcache
 
-Make an entry in APP/bootstrap.php for the 'view_memcache' engine:
+Make an entry in APP/bootstrap.php for the 'view_memcache' engine and load the plugin:
 
 ```php
  Cache::config('view_memcache', array(
@@ -20,6 +20,10 @@ Make an entry in APP/bootstrap.php for the 'view_memcache' engine:
   		'persistent' => true, // [optional] set this to false for non-persistent connections
   		'compress' => true, // [optional] compress data in Memcache (slower, but uses less memory)
  ));
+ 
+ CakePlugin::load(array(
+	'ViewMemcache'
+));
  ```
  
 Put this in APP/Controller/AppController.php or just in the controller you want to do caching in.  

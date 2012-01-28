@@ -16,13 +16,14 @@ App::uses('AppHelper', 'View/Helper');
  * Based on https://github.com/salgo/cakephp-viewmemcache by salgo
  *
  */
-class ViewMemcache extends AppHelper {
+class ViewMemcacheHelper extends AppHelper {
 	function afterLayout() {
 		if (Configure::read('Cache.disable') || Configure::read('ViewMemcache.disable')) {
 			return true;
 		}
 	
-		if (!empty($this->_View->viewVars['enableViewMemcache'] === true)) {
+		if (!empty($this->_View->viewVars['enableViewMemcache'])) {
+			debug('hi');
 			if (isset($this->_View->viewVars['viewMemcacheTimeout'])) {
 				Cache::set(array('duration' => $this->_View->viewVars['viewMemcacheTimeout'],null,'view_memcache'));	//'+30 days' or seconds
 			}
