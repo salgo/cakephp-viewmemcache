@@ -1,10 +1,10 @@
 # ViewMemcache for CakePHP 2.X
 
-Store your view(s) to memcache.  Allows easy distributed view invalidation and serving pages right from memcache via nginx (for example)
+Store your view(s) to memcache.  Allows easy distributed view invalidation and serving GZIPPED pages right from memcache via nginx (for example).
 
 ## Configuration
 
-clone into APP/Plugin/ViewMemcache
+clone/submodule into APP/Plugin/ViewMemcache
 
 Make an entry in APP/bootstrap.php for the 'view_memcache' engine and load the plugin and the VieMemcache engine:
 
@@ -43,12 +43,24 @@ $viewMemcacheDuration = 600; //<seconds> | <cache engine readable range, ex: '+3
 $enableViewMemcache = true;
 //You can also diable gzip compression on an action by action basis by doing $this->set('viewMemcacheDisableGzip',true);
 $this->set(compact('viewMemcacheDuration','enableViewMemcache'));
- //$this->set('viewMemcacheNoFooter',true);	//If you set this, it will omit the HTML comment
+//$this->set('viewMemcacheNoFooter',true);	//If you set this, it will omit the HTML comment
 ```
 
 ### nginx sample config using PHP-FPM
 
 ```
+server {
+    listen      80;
+	server_name mydomain.com;
+        
+    access_log  /var/log/nginx/mydomain.access.log;
+    error_log   /var/log/nginx/mydomain.error.log;
+    rewrite_log on;
+    root        /opt/mydomain.com/app/webroot;
+    index       index.php;
+    autoindex off;
+    keepalive_timeout 0;
+    
 	gzip on;    
    	gzip_types text/plain text/css application/x-javascript text/javascript application/javascript application/json application/xml text/x-component application/rss+xml text/xml;
 		
