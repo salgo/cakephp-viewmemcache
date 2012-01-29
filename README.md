@@ -2,6 +2,8 @@
 
 Store your view(s) to memcache.  Allows easy distributed view invalidation and serving GZIPPED pages right from memcache via nginx (for example).
 
+Based on salgo's viewmemcache plugin https://github.com/salgo/cakephp-viewmemcache
+
 ## Configuration
 
 clone/submodule into APP/Plugin/ViewMemcache
