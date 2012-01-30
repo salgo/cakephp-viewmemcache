@@ -19,7 +19,7 @@ class ViewMemcacheEngine extends MemcacheEngine {
 		if (empty($key)) {
 			return false;
 		}
-		CakeLog::write('debug', "ViewMemCacheEngine: key (minus cache prefix): {$key}");
+// 		CakeLog::write('debug', "ViewMemCacheEngine: key (minus cache prefix): {$key}");
 		return $key;
 	}
 }

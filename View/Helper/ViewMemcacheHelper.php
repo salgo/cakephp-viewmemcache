@@ -69,10 +69,11 @@ class ViewMemcacheHelper extends AppHelper {
 			}
 						
 			if ( $this->gzipContent && empty($this->_View->viewVars['viewMemcacheDisableGzip']) ) {
-// 				CakeLog::write('debug', "ViewMemCache: gzipping");
+//				CakeLog::write('debug', "ViewMemCache: gzipping ".$this->request->here."\n\n".var_export($this->request,true)."\n\n".var_export($_SERVER,true));
 				Cache::write($this->request->here, gzencode($this->_View->output . $this->cacheFooter, $this->compressLevel), 'view_memcache');
 			}
 			else {
+// 				CakeLog::write('debug', "ViewMemCache: NOT gzipping ");
 				Cache::write($this->request->here, $this->_View->output . $this->cacheFooter, 'view_memcache');
 			}					
 		}
