@@ -54,30 +54,34 @@ class ViewMemcacheHelper extends AppHelper {
 		if (Configure::read('Cache.disable') || Configure::read('ViewMemcache.disable')) {
 			return true;
 		}
-	
-		if (!empty($this->_View->viewVars['enableViewMemcache'])) {
-			if (isset($this->_View->viewVars['viewMemcacheDuration'])) {
-// 				CakeLog::write('debug', "ViewMemCache: duration override: {$this->_View->viewVars['viewMemcacheDuration']}");
-				Cache::set(array('duration' => $this->_View->viewVars['viewMemcacheDuration'],null,'view_memcache'));	//'+30 days' or seconds
-			}
 
-			if (!isset($this->_View->viewVars['viewMemcacheNoFooter'])) {
-// 				CakeLog::write('debug', "ViewMemCache: footer disabled");
-				$this->cacheFooter = "\n<!-- ViewCached";
-				if($this->gzipContent) $this->cacheFooter .= ' gzipped';
-				$this->cacheFooter .= ' '.date('r').' -->';
+		try {
+			if (!empty($this->_View->viewVars['enableViewMemcache'])) {
+				if (isset($this->_View->viewVars['viewMemcacheDuration'])) {
+					// CakeLog::write('debug', "ViewMemCache: duration override: {$this->_View->viewVars['viewMemcacheDuration']}");
+					@Cache::set(array('duration' => $this->_View->viewVars['viewMemcacheDuration'],null,'view_memcache'));	//'+30 days' or seconds
+				}
+
+				if (!isset($this->_View->viewVars['viewMemcacheNoFooter'])) {
+					//CakeLog::write('debug', "ViewMemCache: footer disabled");
+					$this->cacheFooter = "\n<!-- ViewCached";
+					if($this->gzipContent) $this->cacheFooter .= ' gzipped';
+					$this->cacheFooter .= ' '.date('r').' -->';
+				}
+
+				if ( $this->gzipContent && empty($this->_View->viewVars['viewMemcacheDisableGzip']) ) {
+					//CakeLog::write('debug', "ViewMemCache: gzipping ".$this->request->here."\n\n".var_export($this->request,true)."\n\n".var_export($_SERVER,true));
+					@Cache::write($this->request->here, gzencode($this->_View->output . $this->cacheFooter, $this->compressLevel), 'view_memcache');
+				}
+				else {
+					//CakeLog::write('debug', "ViewMemCache: NOT gzipping ");
+					@Cache::write($this->request->here, $this->_View->output . $this->cacheFooter, 'view_memcache');
+				}
 			}
-						
-			if ( $this->gzipContent && empty($this->_View->viewVars['viewMemcacheDisableGzip']) ) {
-//				CakeLog::write('debug', "ViewMemCache: gzipping ".$this->request->here."\n\n".var_export($this->request,true)."\n\n".var_export($_SERVER,true));
-				Cache::write($this->request->here, gzencode($this->_View->output . $this->cacheFooter, $this->compressLevel), 'view_memcache');
-			}
-			else {
-// 				CakeLog::write('debug', "ViewMemCache: NOT gzipping ");
-				Cache::write($this->request->here, $this->_View->output . $this->cacheFooter, 'view_memcache');
-			}					
+		} catch (Exception $e) {
+			//do nothing
 		}
-	
+
 		return true;
 	}
 }
