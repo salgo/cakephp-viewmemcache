@@ -50,7 +50,7 @@ class ViewMemcacheHelper extends AppHelper {
 		}
 	}
 	
-	function afterLayout() {
+	function afterLayout($layoutFile) {
 		if (Configure::read('Cache.disable') || Configure::read('ViewMemcache.disable')) {
 			return true;
 		}
