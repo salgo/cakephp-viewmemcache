@@ -1,5 +1,5 @@
 <?php
-App::uses('MemcacheEngine', 'Cache/Engine');
+App::uses('MemcachedEngine', 'Cache/Engine');
 /**
  * ViewMemcache storage engine for cache.  This cache keeps '/'s in the key.
  * Memcache has some limitations in the amount of
@@ -8,7 +8,7 @@ App::uses('MemcacheEngine', 'Cache/Engine');
  *
  * @author rynop.com
  */
-class ViewMemcacheEngine extends MemcacheEngine {
+class ViewMemcacheEngine extends MemcachedEngine {
 	/**
 	 * Don't convert / to _
 	 *
